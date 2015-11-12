@@ -1,0 +1,83 @@
+<html>
+<head>
+  <title>Athletes</title>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+  <script src="javascripts/app.js"></script>
+  <link href="stylesheets/style.css" rel="stylesheet"/>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+</head>
+<body ng-app="athletes" ng-controller="MainCtrl" style = "background-image: url(http://www.sparklingword.it/wp-content/uploads/2015/01/727392-o.jpg); background-repeat: no-repeat; background-size:120%;">
+	<div class="row" >
+		<div class="col-md-6 col-md-offset-3" style = "background-color: white">
+		<div class="page-header" style = "text-align: center; background-color: white"> 
+  	<h1 style = "text-align: center; background-color: white">Who Will Be the 2015-2016 NBA MVP?</h1>
+  	</div>
+  <div ng-repeat="athlete in athletes | orderBy: '-upvotes'" style = "background-color: white;">
+  	<div class = "row">
+    	<div class = "col-md-4">
+          <img style="height:230px; width:250px;" ng-src="{{athlete.imgURL}}" />
+        </div>
+        <div class = "col-md-7" style = "font-size:30px; text-align: center;">
+          {{athlete.firstName}}  {{athlete.lastName}}
+          <br><button type="button" ng-click = "incrementUpvotes(athlete)" class="btn btn-success">I Vote {{athlete.firstName}} for MVP</button>
+          <button type="button" ng-click = "incrementWins(athlete)" class="btn btn-success">Add Win</button>
+          <button type="button" ng-click = "incrementLosses(athlete)" class="btn btn-danger">Add Loss</button>
+          <br><h3>Current MVP Votes: {{athlete.upvotes}}</h3>
+          <h5 style = "text-align: left;">Player Details</h5>
+          <ul style = "text-align: left; font-size: 14px;">
+          	<li><strong>Team</strong>: {{athlete.team}}</li>
+          	<li><strong>Wins: </strong>{{athlete.wins}}
+          	<li><strong>Losses: </strong>{{athlete.losses}}
+          </ul>
+          <br>
+        </div>
+    </div>
+  </div>
+
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add a New MVP Candidate</button>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+          <h2>Add an MVP Candidate</h2>
+            <form ng-submit="addAthlete()">
+              First Name<input type="text" ng-model="formFirstName"></input><br>
+              Last Name<input type="text" ng-model="formLastName"></input><br>
+              Team<input type="text" ng-model="formTeam"></input><br>
+              Team Wins<input type="number" ng-model="formWins"></input><br>
+              Team Losses<input type="number" ng-model="formLosses"></input><br>
+              Player Image<input type="text" ng-model="formPlayerImage"></input><br>
+              <li>
+              <button type="submit">Add Athlete</button>
+            </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+</body>
+</html>
