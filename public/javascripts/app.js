@@ -2,23 +2,21 @@ angular.module('athletes', [])
 .controller('MainCtrl', [
   '$scope','$http',
   function($scope,$http){
+    $scope.showModal = false;
     $scope.test = 'Who Will Win the NBA MVP This Year?';
+
     $scope.athletes = [
-      {firstName:'James', lastName: "Harden", team: "Houston Rockets", upvotes:5, wins: 6, losses: 0, imgURL: "http://thesportsquotient.com/media/posts/8028/james%20harden%20blogsohard.jpg"},
-      {firstName:'Lebron', lastName: "James", team: "Cleveland Cavaliers", upvotes:5, wins: 7, losses: 1, imgURL: "http://www.trbimg.com/img-55b10e35/turbine/la-et-mn-lebron-james-space-jam-2-warner-bros-20150722"},
-      {firstName:'Stephen', lastName: "Curry", team: "Golden State Warriors", upvotes:5, wins: 8, losses: 0, imgURL: "http://d2118lkw40i39g.cloudfront.net/wp-content/uploads/2015/06/cd0ymzcznguwzdbhnduynddiytjhm2yyzthlmtjjotqwyyznpwu1nja1yjkzmjy1mjq4nwmwowmxmji2mgmxzmnjzguz.jpeg"},
-      {firstName:'Tim', lastName: "Duncan", team: "San Antonio Spurs", upvotes:5, wins: 6, losses: 2, imgURL: "http://i.cdn.turner.com/nba/nba/.element/img/1.0/sect/allstar/profiles/tim_duncan_300.jpg"}
     ];
-    $scope.create = function(athlete) {
+
+    $scope.createAthlete = function(athlete) {
     return $http.post('/athletes', athlete).success(function(data){
       $scope.athletes.push(data);
     });
     };
-
-    $scope.addAthlete = function() {
+        $scope.addAthlete = function() {
       if($scope.firstName === '000') { return; }
       console.log("In addComment with "+$scope.formfirstName);
-      $scope.create({
+      $scope.createAthlete({
         firstName: $scope.formFirstName,
         lastName:$scope.formLastName,
         team:$scope.formTeam, 
@@ -26,11 +24,24 @@ angular.module('athletes', [])
         losses:$scope.formLosses, 
         imgURL:$scope.formPlayerImage,
         upvotes: 0,
+        games: [{
+          
+        }]
+        
       });
       $scope.formContent = '';
     };
+    $scope.addGame = function(athlete) {
+      console.log(athlete.wins);
+    };
+
+
     $scope.incrementUpvotes = function(athlete) {
+      console.log(athlete.wins)
       $scope.upvote(athlete);
+    };
+    $scope.downvotes = function(athlete) {
+      $scope.downvote(athlete);
     };
     $scope.incrementWins = function(athlete) {
       console.log("I am in the increment Vote function")
@@ -55,6 +66,15 @@ angular.module('athletes', [])
         });
     };
 
+    $scope.downvote = function(athlete) {
+
+      return $http.put('/athletes/' + athlete._id + '/downvote')
+        .success(function(data){
+          console.log("downvote worked");
+          athlete.upvotes -= 1;
+        });
+    };
+
     $scope.upWin = function(athlete) {
       return $http.put('/athletes/' + athlete._id + '/upwin')
         .success(function(data){
@@ -64,10 +84,22 @@ angular.module('athletes', [])
     };
 
     $scope.upLoss = function(athlete) {
+      console.log(athlete._id);
       return $http.put('/athletes/' + athlete._id + '/uploss')
         .success(function(data){
           console.log("upLoss worked");
           athlete.losses += 1;
+        });
+    };
+    $scope.addGameToList = function(athlete) {
+      console.log ("I made it!");
+      console.log(athlete._id);
+      return $http.put('/athletes/' + athlete._id + '/insertgame')
+        .success(function(data){
+          console.log("upLoss worked");
+          athlete.games.push({
+            myteam: $scope.formMyTeam
+          })
         });
     };
     

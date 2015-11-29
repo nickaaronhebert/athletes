@@ -13,6 +13,7 @@ router.get('/athletes', function(req, res, next) {
 
 router.post('/athletes', function(req, res, next) {
   var athlete = new Athlete(req.body);
+  console.dir(req.body);
   athlete.save(function(err, athlete){
     if(err){ return next(err); }
     res.json(athlete);
@@ -45,6 +46,13 @@ router.put('/athletes/:athlete/upwin', function(req, res, next) {
 
 router.put('/athletes/:athlete/uploss', function(req, res, next) {
   req.athlete.uploss(function(err, athlete){
+    if (err) { return next(err); }
+    res.json(athlete);
+  });
+});
+
+router.put('/athletes/:athlete/insertgame', function(req, res, next) {
+  req.athlete.insertgame(function(err, athlete){j
     if (err) { return next(err); }
     res.json(athlete);
   });
